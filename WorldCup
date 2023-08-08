@@ -1,0 +1,47 @@
+# GiumaRamadan.github.io     WorldCup Project
+I used this opportunity to increase my football knowledge by doing it in a fun 
+exploratory way using SQL to explore and manipulate data to answer some questions I was curious about.
+I then wanted to display it as a dashboard to show my friends, the data I found in a cool but easily understandable way.
+
+SQL: 
+
+use fifa_worldcup;
+
+--- Ordering Countries based on numb of Wc they have
+
+SELECT distinct Champion , count(champion) AS Numb_Of_WC 
+FROM fifa_worldcup_summary
+Group by champion
+order by count(champion) DESC;
+
+--- Ordering Countries based on who hosted it the most?
+
+SELECT DISTINCT Host , COUNT(HOST) AS Hosted_Count
+FROM fifa_worldcup_summary 
+Group by Host
+Order by Hosted_count DESC;
+
+--- Total number of WC matches Ever played And goals scored
+SELECT SUM(MATCHES_PLAYED)  Total_MatchesPlayed , SUM(Goals_scored)  Total_Goals_Scored FROM FIFA_WORLDCUP_SUMMARY;
+
+--- Ordering Champions based on who scored more goals
+SELECT champion , SUM(Goals_Scored) AS Total_goals_scored FROM fifa_worldcup_summary
+Group by champion
+Order by SUM(goals_scored) DESC;
+
+--- What are the min, max and total AVERAGE  for average goals scored in wc history?
+SELECT  MIN(AVG_GOALS_PER_GAME)  , MAX(AVG_GOALS_PER_GAME) , AVG(AVG_GOALS_PER_GAME) 
+From fifa_worldcup_Summary;
+
+--- How many times was Argentina a Runner up or third place?
+SELECT runner_up , third_place,count(*) FROM fifa_worldcup_summary 
+WHERE Runner_up = 'Argentina' or third_place = 'Argentina'
+group by runner_up , third_place ;
+
+--- First-ever worldcup Vs Most recent worldcup teams and their respective positions
+SELECT F2022.Position, F2022.Team  2022_Teams, 
+       F1930.Position, F1930.Team 1930_Teams
+FROM fifa_worldcup.fifa1930 F1930
+RIGHT JOIN fifa_worldcup.fifa2022 F2022
+on F1930.Position = F2022.Position;
+
